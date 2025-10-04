@@ -1,262 +1,205 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="de">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Fiktive Streaming-Platform — Catalog</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Meine Serien</title>
 <style>
-  :root{
-    --bg:#141414;
-    --card:#1f1f1f;
-    --accent:#e50914;
-    --muted:#b3b3b3;
-    --gap:16px;
-    --radius:8px;
-  }
-  *{box-sizing:border-box;font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;}
-  body{margin:0;background:linear-gradient(180deg,#0f0f10 0%, #151515 100%);color:#fff;min-height:100vh;}
-  header{display:flex;align-items:center;justify-content:space-between;padding:18px 28px;background:linear-gradient(0deg, rgba(0,0,0,0.25), transparent);position:sticky;top:0;z-index:30}
-  .logo{display:flex;align-items:center;gap:12px}
-  .logo .dot{width:36px;height:36px;border-radius:6px;background:var(--accent);display:flex;align-items:center;justify-content:center;font-weight:700;}
-  h1{margin:0;font-size:18px;letter-spacing:1px}
-  .controls{display:flex;gap:10px;align-items:center}
-  button, .btn{background:var(--accent);border:none;padding:8px 12px;border-radius:6px;color:#fff;cursor:pointer;font-weight:600}
-  .btn.secondary{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted);padding:6px 10px}
-  main{padding:20px 28px 80px}
-  .grid{display:grid;grid-template-columns:1fr 360px;gap:24px}
-  .catalog{background:transparent}
-  .row{margin-bottom:28px}
-  .row h2{margin:0 0 10px 8px;font-size:18px}
-  .carousel{display:flex;gap:12px;overflow:auto;padding:8px}
-  .card{min-width:180px;background:var(--card);border-radius:8px;overflow:hidden;box-shadow:0 10px 20px rgba(0,0,0,0.6);cursor:pointer;flex:0 0 auto}
-  .card img{width:100%;height:260px;object-fit:cover;display:block}
-  .card .meta{padding:8px}
-  .meta .title{font-weight:700;font-size:14px}
-  .meta .sub{font-size:12px;color:var(--muted);margin-top:6px}
-  aside{background:rgba(255,255,255,0.02);padding:14px;border-radius:10px;height:fit-content}
-  label{display:block;font-size:13px;margin:8px 0 6px;color:var(--muted)}
-  input[type="text"], textarea{width:100%;padding:8px;border-radius:6px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:#fff}
-  .small{font-size:13px;color:var(--muted)}
-  .center{display:flex;align-items:center;justify-content:center}
-  .series-detail{margin-top:8px}
-  .season{background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);padding:10px;border-radius:8px;margin-bottom:10px}
-  .episodes{display:flex;gap:10px;flex-wrap:wrap}
-  .episode{width:120px;background:#111;padding:6px;border-radius:6px;cursor:default}
-  .episode img{width:100%;height:72px;object-fit:cover;border-radius:4px}
-  .muted{color:var(--muted)}
-  .modalBg{position:fixed;inset:0;background:rgba(0,0,0,0.6);display:none;align-items:center;justify-content:center;z-index:100}
-  .modal{width:680px;background:#0f0f0f;border-radius:10px;padding:18px}
-  .modal h3{margin:0 0 10px 0}
-  .rowFlex{display:flex;gap:12px}
-  .filePreview{width:160px;height:200px;border-radius:8px;background:linear-gradient(180deg,#222,#111);display:flex;align-items:center;justify-content:center;color:var(--muted);overflow:hidden}
-  .thumb{max-width:100%;max-height:100%;display:block}
-  .smallBtn{padding:6px 8px;border-radius:6px;border:0;background:rgba(255,255,255,0.06);color:var(--muted);cursor:pointer}
-  .topbar{display:flex;gap:8px;align-items:center}
-  .link{color:var(--muted);cursor:pointer;text-decoration:underline}
-  @media (max-width:900px){
-    .grid{grid-template-columns:1fr;padding-bottom:120px}
-    .modal{width:92%}
-    .card img{height:200px}
-  }
+  body { margin: 0; font-family: Arial, sans-serif; background-color: #141414; color: white; }
+  header { padding: 20px; font-size: 24px; font-weight: bold; display: flex; justify-content: space-between; background-color: #1a1a1a; }
+  button { background-color: #e50914; border: none; padding: 8px 12px; border-radius: 6px; color: white; cursor: pointer; }
+  main { padding: 20px; display: flex; gap: 20px; }
+  .catalog { flex: 2; }
+  .row { margin-bottom: 30px; }
+  .row h2 { margin-bottom: 10px; }
+  .carousel { display: flex; gap: 10px; overflow-x: auto; }
+  .card { min-width: 180px; border-radius: 8px; overflow: hidden; cursor: pointer; background-color: #222; }
+  .card img { width: 100%; height: 260px; object-fit: cover; }
+  .meta { padding: 8px; }
+  .meta .title { font-weight: bold; }
+  aside { flex: 1; background-color: #1f1f1f; padding: 14px; border-radius: 8px; min-width: 280px; }
+  .season { background-color: #111; padding: 10px; border-radius: 8px; margin-bottom: 10px; }
+  .episodes { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
+  .episode { width: 120px; background-color: #222; padding: 6px; border-radius: 6px; }
+  .episode img { width: 100%; height: 72px; object-fit: cover; border-radius: 4px; }
+  .muted { color: #b3b3b3; font-size: 14px; }
+  #modal { position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: none; align-items: center; justify-content: center; z-index: 100; }
+  .modalContent { width: 600px; background-color: #0f0f0f; border-radius: 10px; padding: 18px; }
+  label { display: block; margin-top: 10px; margin-bottom: 4px; }
+  input[type="text"], textarea, input[type="file"] { width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #444; background-color: #1f1f1f; color: white; }
+  .filePreview { width: 160px; height: 220px; background: #222; display: flex; align-items: center; justify-content: center; border-radius: 8px; overflow: hidden; margin-top: 10px; color: #888; text-align: center; }
 </style>
 </head>
 <body>
+
 <header>
-  <div class="logo">
-    <div class="dot">S</div>
-    <div>
-      <h1>StreamCatalog (fiktiv)</h1>
-      <div class="small muted">Dein persönlicher Streaming-Katalog</div>
-    </div>
-  </div>
-  <div class="controls">
-    <button id="btnAddSeries">+ Serie hinzufügen</button>
-    <button id="btnReset" class="btn secondary">Daten löschen</button>
-  </div>
+  Meine Serien
+  <button id="btnAddSeries">+ Serie hinzufügen</button>
 </header>
 
 <main>
-  <div class="grid">
-    <div class="catalog">
-      <section id="catalogRows"></section>
-      <div id="emptyNote" class="muted" style="padding:20px">Noch keine Serien. Klick auf „+ Serie hinzufügen“.</div>
-    </div>
-
-    <aside>
-      <div id="sideContent">
-        <h3>Details</h3>
-        <div class="muted">Wähle eine Serie aus, um Staffeln und Folgen zu verwalten.</div>
-      </div>
-    </aside>
+  <div class="catalog">
+    <div id="catalogRows"></div>
+    <div id="emptyNote" class="muted">Noch keine Serien. Klicke auf „+ Serie hinzufügen“.</div>
   </div>
+  <aside>
+    <div id="sideContent">
+      <h3>Details</h3>
+      <div class="muted">Wähle eine Serie aus, um Staffeln und Folgen zu verwalten.</div>
+    </div>
+  </aside>
 </main>
 
-<div id="modal" class="modalBg">
-  <div class="modal" role="dialog" aria-modal="true">
-    <div class="topbar">
-      <h3 id="modalTitle">Neue Serie</h3>
-      <div style="flex:1"></div>
-      <button id="closeModal" class="smallBtn">Schließen</button>
-    </div>
-    <div style="height:10px"></div>
-    <div class="rowFlex">
-      <div style="flex:1">
-        <label>Titel</label>
-        <input id="seriesTitle" type="text" placeholder="Serientitel">
-        <label class="small">Beschreibung</label>
-        <textarea id="seriesDesc" rows="4" placeholder="Kurzbeschreibung (optional)"></textarea>
-        <div style="height:8px"></div>
-        <label class="small">Cover-Bild</label>
-        <input id="seriesCoverInput" type="file" accept="image/*">
-        <div style="height:8px"></div>
-        <div style="display:flex;gap:8px">
-          <button id="saveSeries" class="btn">Speichern</button>
-          <button id="updateSeries" class="btn" style="display:none">Aktualisieren</button>
-        </div>
-      </div>
-      <div style="width:180px">
-        <div class="filePreview" id="coverPreview">Cover<br><span class="muted">(Vorschau)</span></div>
-      </div>
-    </div>
+<div id="modal">
+  <div class="modalContent">
+    <h3 id="modalTitle">Neue Serie</h3>
+    <label>Titel</label>
+    <input id="seriesTitle" type="text" placeholder="Serientitel">
+    <label>Beschreibung</label>
+    <textarea id="seriesDesc" rows="3" placeholder="Kurzbeschreibung (optional)"></textarea>
+    <label>Serien-Cover</label>
+    <input id="seriesCoverInput" type="file" accept="image/*">
+    <div class="filePreview" id="coverPreview">Cover-Vorschau</div>
+    <button id="saveSeries" style="margin-top:10px;">Speichern</button>
+    <button id="closeModal" style="margin-top:10px; background:#444;">Schließen</button>
   </div>
 </div>
 
 <script>
-// ---------- IndexedDB ----------
-const DB_NAME = 'streamcatalog_db';
-const STORE = 'series';
-function openDB(){ 
-  return new Promise((resolve, reject) => {
-    const req = indexedDB.open(DB_NAME, 1);
-    req.onupgradeneeded = () => {
-      const db = req.result;
-      if(!db.objectStoreNames.contains(STORE)) db.createObjectStore(STORE, { keyPath: 'id' });
-    };
-    req.onsuccess = () => resolve(req.result);
-    req.onerror = () => reject(req.error);
-  });
-}
-async function dbGetAll(){ const db = await openDB(); return new Promise((res,rej)=>{ const tx=db.transaction(STORE,'readonly'); const store=tx.objectStore(STORE); const req=store.getAll(); req.onsuccess=()=>res(req.result); req.onerror=()=>rej(req.error);});}
-async function dbPut(obj){ const db=await openDB(); return new Promise((res,rej)=>{ const tx=db.transaction(STORE,'readwrite'); const store=tx.objectStore(STORE); const req=store.put(obj); req.onsuccess=()=>res(req.result); req.onerror=()=>rej(req.error);});}
-async function dbDelete(id){ const db=await openDB(); return new Promise((res,rej)=>{ const tx=db.transaction(STORE,'readwrite'); const store=tx.objectStore(STORE); const req=store.delete(id); req.onsuccess=()=>res(); req.onerror=()=>rej(req.error);});}
-async function dbClear(){ const db=await openDB(); return new Promise((res,rej)=>{ const tx=db.transaction(STORE,'readwrite'); const store=tx.objectStore(STORE); const req=store.clear(); req.onsuccess=()=>res(); req.onerror=()=>rej(req.error);});}
-
-// ---------- Helpers ----------
-function uid(prefix='id'){ return prefix + '_' + Math.random().toString(36).slice(2,9); }
+// Hilfsfunktionen
+function uid(prefix='id'){ return prefix+'_'+Math.random().toString(36).slice(2,9); }
 function el(tag, className){ const e=document.createElement(tag); if(className)e.className=className; return e; }
 function readFileAsDataURL(file){ return new Promise((res,rej)=>{ const fr=new FileReader(); fr.onload=()=>res(fr.result); fr.onerror=()=>rej(fr.error); fr.readAsDataURL(file); }); }
-function placeholderCover(text,w=400,h=600){ const svg=`<svg xmlns='http://www.w3.org/2000/svg' width='${w}' height='${h}'><rect width='100%' height='100%' fill='#222'/><text x='50%' y='50%' fill='#666' font-size='28' font-family='sans-serif' text-anchor='middle'>${text||'Cover'}</text></svg>`; return 'data:image/svg+xml;utf8,'+encodeURIComponent(svg);}
+function placeholderCover(text,w=400,h=600){ const svg=`<svg xmlns='http://www.w3.org/2000/svg' width='${w}' height='${h}'><rect width='100%' height='100%' fill='#222'/><text x='50%' y='50%' fill='#666' font-size='28' font-family='sans-serif' text-anchor='middle'>${text}</text></svg>`; return 'data:image/svg+xml;utf8,'+encodeURIComponent(svg); }
 
-// ---------- App state ----------
-let seriesList=[]; 
+// IndexedDB Setup
+const DB_NAME='streamcatalog_db';
+const STORE='series';
+function openDB(){ return new Promise((resolve,reject)=>{ const req=indexedDB.open(DB_NAME,1); req.onupgradeneeded=()=>{ const db=req.result; if(!db.objectStoreNames.contains(STORE)) db.createObjectStore(STORE,{keyPath:'id'}); }; req.onsuccess=()=>resolve(req.result); req.onerror=()=>reject(req.error); }); }
+async function dbGetAll(){ const db=await openDB(); return new Promise((res,rej)=>{ const tx=db.transaction(STORE,'readonly'); const store=tx.objectStore(STORE); const r=store.getAll(); r.onsuccess=()=>res(r.result); r.onerror=()=>rej(r.error); }); }
+async function dbPut(obj){ const db=await openDB(); return new Promise((res,rej)=>{ const tx=db.transaction(STORE,'readwrite'); const store=tx.objectStore(STORE); const r=store.put(obj); r.onsuccess=()=>res(r.result); r.onerror=()=>rej(r.error); }); }
+async function dbClear(){ const db=await openDB(); return new Promise((res,rej)=>{ const tx=db.transaction(STORE,'readwrite'); const store=tx.objectStore(STORE); const r=store.clear(); r.onsuccess=()=>res(); r.onerror=()=>rej(r.error); }); }
+
+// App State
+let seriesList=[];
 let currentSeries=null;
 
-// ---------- Rendering ----------
+// Elemente
 const catalogRows=document.getElementById('catalogRows');
 const sideContent=document.getElementById('sideContent');
 const emptyNote=document.getElementById('emptyNote');
-
-async function loadSeries(){ seriesList = await dbGetAll(); renderCatalog(); }
-
-function renderCatalog(){
-  catalogRows.innerHTML='';
-  if(seriesList.length===0){emptyNote.style.display='block'; return;} else emptyNote.style.display='none';
-  seriesList.forEach(s=>{
-    const row = el('div','row');
-    const h2 = el('h2'); h2.textContent = s.title; row.appendChild(h2);
-    const carousel=el('div','carousel');
-    // Staffel Cover anzeigen
-    (s.seasons||[]).forEach(se=>{
-      const card = el('div','card');
-      const img = el('img'); img.src=se.cover||placeholderCover('Staffel'); card.appendChild(img);
-      const meta = el('div','meta'); meta.innerHTML=`<div class="title">Staffel ${se.number}</div>`; card.appendChild(meta);
-      card.onclick=()=>showSeriesDetail(s.id); carousel.appendChild(card);
-    });
-    row.appendChild(carousel); catalogRows.appendChild(row);
-  });
-}
-
-function showSeriesDetail(id){
-  currentSeries = seriesList.find(s=>s.id===id);
-  sideContent.innerHTML='';
-  if(!currentSeries) return;
-  const title=el('h3'); title.textContent=currentSeries.title; sideContent.appendChild(title);
-  const desc=el('div'); desc.textContent=currentSeries.description||''; sideContent.appendChild(desc);
-  const btnAddSeason = el('button','btn'); btnAddSeason.textContent='+ Staffel hinzufügen';
-  btnAddSeason.onclick=()=>addSeasonModal(); sideContent.appendChild(btnAddSeason);
-  // Staffeln
-  (currentSeries.seasons||[]).forEach(se=>{
-    const sDiv=el('div','season');
-    const sTitle=el('div'); sTitle.innerHTML=`<strong>Staffel ${se.number}</strong>`; sDiv.appendChild(sTitle);
-    if(se.episodes&&se.episodes.length>0){
-      const epDiv=el('div','episodes');
-      se.episodes.forEach(ep=>{
-        const e=el('div','episode');
-        const img=el('img'); img.src=ep.cover||placeholderCover('Folge',160,90); e.appendChild(img);
-        const t=el('div'); t.textContent=ep.title; e.appendChild(t);
-        epDiv.appendChild(e);
-      });
-      sDiv.appendChild(epDiv);
-    }
-    const btnAddEp=el('button','smallBtn'); btnAddEp.textContent='+ Folge'; btnAddEp.onclick=()=>addEpisodeModal(se.id); sDiv.appendChild(btnAddEp);
-    sideContent.appendChild(sDiv);
-  });
-}
-
-// ---------- Modals ----------
 const modal=document.getElementById('modal');
 const modalTitle=document.getElementById('modalTitle');
-const closeModal=document.getElementById('closeModal');
 const seriesTitle=document.getElementById('seriesTitle');
 const seriesDesc=document.getElementById('seriesDesc');
 const seriesCoverInput=document.getElementById('seriesCoverInput');
 const coverPreview=document.getElementById('coverPreview');
 const saveSeries=document.getElementById('saveSeries');
+const closeModal=document.getElementById('closeModal');
 
-closeModal.onclick=()=>{ modal.style.display='none'; seriesTitle.value=''; seriesDesc.value=''; seriesCoverInput.value=''; coverPreview.innerHTML='Cover<br><span class="muted">(Vorschau)</span>'; }
-
-seriesCoverInput.onchange=async(e)=>{ if(e.target.files[0]){ const url=await readFileAsDataURL(e.target.files[0]); coverPreview.innerHTML=`<img class="thumb" src="${url}">`; } }
-
+// Modal Logik
 document.getElementById('btnAddSeries').onclick=()=>{
   modal.style.display='flex';
   modalTitle.textContent='Neue Serie';
-  saveSeries.style.display='inline-block';
-}
+};
+closeModal.onclick=()=>{ modal.style.display='none'; seriesTitle.value=''; seriesDesc.value=''; seriesCoverInput.value=''; coverPreview.innerHTML='Cover-Vorschau'; };
 
+// Cover-Vorschau
+seriesCoverInput.onchange=async(e)=>{ if(e.target.files[0]){ const url=await readFileAsDataURL(e.target.files[0]); coverPreview.innerHTML=`<img src="${url}" style="width:100%;height:100%;object-fit:cover;">`; } };
+
+// Serie speichern
 saveSeries.onclick=async()=>{
   if(!seriesTitle.value.trim()) return alert('Titel fehlt');
   const cover = seriesCoverInput.files[0]?await readFileAsDataURL(seriesCoverInput.files[0]):placeholderCover('Serie');
-  const sObj={id:uid(),title:seriesTitle.value,description:seriesDesc.value,cover, seasons:[]};
-  await dbPut(sObj); seriesList.push(sObj); modal.style.display='none'; renderCatalog();
-}
+  const sObj={id:uid(), title:seriesTitle.value, description:seriesDesc.value, cover, seasons:[]};
+  await dbPut(sObj);
+  seriesList.push(sObj);
+  modal.style.display='none';
+  seriesTitle.value=''; seriesDesc.value=''; seriesCoverInput.value=''; coverPreview.innerHTML='Cover-Vorschau';
+  renderCatalog();
+};
 
-// ---------- Staffel Modal & Episode Modal ----------
-async function addSeasonModal(){
-  const title=prompt('Staffelnummer eingeben (Zahl)', ((currentSeries.seasons?.length||0)+1)); 
-  if(!title) return;
-  const coverFile = await new Promise(res=>{
-    const f=prompt('URL oder lokal für Cover-Bild (leer=Platzhalter)');
-    res(f||null);
+// Rendern
+function renderCatalog(){
+  catalogRows.innerHTML='';
+  if(seriesList.length===0){ emptyNote.style.display='block'; return; } else emptyNote.style.display='none';
+  seriesList.forEach(s=>{
+    const row=el('div','row');
+    const h2=el('h2'); h2.textContent=s.title; row.appendChild(h2);
+    const carousel=el('div','carousel');
+    (s.seasons||[]).forEach(se=>{
+      const card=el('div','card');
+      const img=el('img'); img.src=se.cover||placeholderCover('Staffel'); card.appendChild(img);
+      const meta=el('div','meta'); meta.innerHTML=`<div class="title">Staffel ${se.number}</div>`; card.appendChild(meta);
+      card.onclick=()=>showSeriesDetail(s.id);
+      carousel.appendChild(card);
+    });
+    row.appendChild(carousel);
+    catalogRows.appendChild(row);
   });
-  const se={id:uid('season'),number:title,cover:coverFile||placeholderCover('Staffel'),episodes:[]};
-  currentSeries.seasons=currentSeries.seasons||[];
-  currentSeries.seasons.push(se);
-  await dbPut(currentSeries);
-  renderCatalog(); showSeriesDetail(currentSeries.id);
 }
 
-async function addEpisodeModal(seasonId){
+// Details Sidebar
+function showSeriesDetail(id){
+  currentSeries=seriesList.find(s=>s.id===id);
+  sideContent.innerHTML='';
+  if(!currentSeries) return;
+  const title=el('h3'); title.textContent=currentSeries.title; sideContent.appendChild(title);
+  const desc=el('div'); desc.textContent=currentSeries.description||''; sideContent.appendChild(desc);
+  const btnAddSeason=el('button'); btnAddSeason.textContent='+ Staffel hinzufügen'; btnAddSeason.onclick=()=>addSeason(); sideContent.appendChild(btnAddSeason);
+
+  (currentSeries.seasons||[]).forEach(se=>{
+    const sDiv=el('div','season');
+    const sImg=el('img'); sImg.src=se.cover||placeholderCover('Staffel'); sImg.style.width='180px'; sImg.style.height='260px'; sImg.style.objectFit='cover';
+    sDiv.appendChild(sImg);
+    const sTitle=el('div'); sTitle.textContent=`Staffel ${se.number}`; sDiv.appendChild(sTitle);
+
+    if(se.episodes && se.episodes.length>0){
+      const epDiv=el('div','episodes');
+      se.episodes.forEach(ep=>{
+        const e=el('div','episode');
+        const eImg=el('img'); eImg.src=ep.cover||placeholderCover('Folge',160,90); e.appendChild(eImg);
+        const t=el('div'); t.textContent=ep.title; e.appendChild(t);
+        epDiv.appendChild(e);
+      });
+      sDiv.appendChild(epDiv);
+    }
+
+    const btnAddEp=el('button'); btnAddEp.textContent='+ Folge'; btnAddEp.onclick=()=>addEpisode(se.id); sDiv.appendChild(btnAddEp);
+    sideContent.appendChild(sDiv);
+  });
+}
+
+// Staffel hinzufügen
+async function addSeason(){
+  const num=prompt('Staffelnummer eingeben', ((currentSeries.seasons?.length||0)+1));
+  if(!num) return;
+  const fileInput = document.createElement('input'); fileInput.type='file'; fileInput.accept='image/*';
+  fileInput.onchange=async(e)=>{
+    let cover=null;
+    if(e.target.files[0]) cover=await readFileAsDataURL(e.target.files[0]);
+    const se={id:uid('season'), number:num, cover:cover||placeholderCover('Staffel'), episodes:[]};
+    currentSeries.seasons=currentSeries.seasons||[];
+    currentSeries.seasons.push(se);
+    await dbPut(currentSeries);
+    renderCatalog(); showSeriesDetail(currentSeries.id);
+  };
+  fileInput.click();
+}
+
+// Folge hinzufügen
+async function addEpisode(seasonId){
   const epTitle=prompt('Titel der Folge'); if(!epTitle) return;
-  const epCover=prompt('URL oder lokal für Bild (leer=Platzhalter)')||placeholderCover('Folge',160,90);
+  const epCover=prompt('URL oder leer für Platzhalter')||placeholderCover('Folge',160,90);
   const season=currentSeries.seasons.find(s=>s.id===seasonId);
   season.episodes=season.episodes||[];
-  season.episodes.push({id:uid('ep'),title:epTitle,cover:epCover});
+  season.episodes.push({id:uid('ep'), title:epTitle, cover:epCover});
   await dbPut(currentSeries);
   showSeriesDetail(currentSeries.id);
 }
 
-// ---------- Load ----------
-document.getElementById('btnReset').onclick=async()=>{ if(confirm('Alles löschen?')){await dbClear(); seriesList=[]; renderCatalog(); sideContent.innerHTML='<h3>Details</h3><div class="muted">Wähle eine Serie aus, um Staffeln und Folgen zu verwalten.</div>';}}
+// Laden
+async function loadSeries(){ seriesList = await dbGetAll(); renderCatalog(); }
 loadSeries();
 </script>
 </body>
